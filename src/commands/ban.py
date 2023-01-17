@@ -8,7 +8,7 @@ class Ban(commands.Cog):
 
   @nextcord.slash_command(name = "ban", description = "ban un membre")
   async def ban_slash(self, interaction: nextcord.Interaction, member: nextcord.User = nextcord.SlashOption(name="membre", description="Le membre à bannir"), reason: str = nextcord.SlashOption(name="raison", description="La raison du ban", required=False)):
-    if not checkperm(interaction.user, ['admin']):
+    if not checkperm(interaction.user, ['ban']):
       await interaction.response.send_message("Tu ne peux pas faire cela !", ephemeral=True)
       return
     if reason is None:

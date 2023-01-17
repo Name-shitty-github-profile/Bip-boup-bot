@@ -1,0 +1,32 @@
+class bobt:
+  def __init__(self, bot):
+    self.bot = bot
+
+  async def loadcog(self, fn: str, conf: str):
+    self.bot.load_extension(f'{conf}.{fn}')
+
+  def run(self, token):
+    self.bot.run(token)
+
+from nextcord.ext import commands
+from nextcord import Intents
+import asyncio
+from os import listdir, environ, system
+bot = bobt(commands.Bot(command_prefix=['?'], intents=Intents.all(), help_command=None))
+async def main():
+  global bot
+  tasks: list = []
+  for i in ['commands', 'systemes']:
+    for fn in listdir(i):
+      if fn.endswith(".py"):
+        tasks.append(asyncio.create_task(bot.loadcog(fn[:-3], i)))
+  for i in tasks: await i
+asyncio.run(main())
+@bot.bot.listen("on_disconnect")
+async def change_ip():
+  system("kill 1")
+try:
+  bot.run(environ['token'])
+except Exception as e:
+  print(e)
+  system('kill 1')

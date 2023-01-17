@@ -1,5 +1,6 @@
 from nextcord.ext import commands
 import nextcord
+from utils import checkperm
 from database import add, delete, search
 
 class Bye(commands.Cog):
@@ -8,6 +9,9 @@ class Bye(commands.Cog):
 
   @nextcord.slash_command(name = "aurevoir", description = "Activer le système de aurevoir sur le serveur")
   async def Leave_slash(self, interaction: nextcord.Interaction, channel: nextcord.TextChannel = nextcord.SlashOption(name="salon", description="Le salon que ou tu veux les aurevoirs"), status: bool = nextcord.SlashOption(name="status", description="Activer ou non?")):
+    if not checkperm(interaction.user, ['admin']):
+      await interaction.response.send_message("Tu ne peux pas faire cela !", ephemeral=True)
+      return
     if status is None or status is False:
       delete({"_id": interaction.guild.id}, 'bye')
       await interaction.response.send_message("Le système de bienvenue n'est plus activé !")

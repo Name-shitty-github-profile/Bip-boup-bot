@@ -12,9 +12,10 @@ class Rules(commands.Cog):
 
   @nextcord.slash_command(name='règlement', description='Réglement déja tout fait avec une réaction')
   async def rules_slash(self, interaction: nextcord.Interaction):
-    embed = nextcord.Embed(title="Règlement", description="merci de respecter le règlement et de cliquer sur la réaction.", color=0xe74c3c)
-    for i, j in data.items():
-      embed.add_field(name=i, value=j)
+    embed = nextcord.Embed(title="Règlement", description="Merci de respecter le règlement et de cliquer sur la réaction.", color=0xe74c3c)
+    for dat in data:
+      for i, j in dat.items():
+        embed.add_field(name=i, value=j)
     await interaction.response.send_message(embed=embed)
 
 def setup(bot):
